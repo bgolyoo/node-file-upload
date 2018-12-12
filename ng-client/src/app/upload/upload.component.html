@@ -1,0 +1,14 @@
+<div id="Upload" ngFileDrop [options]="options" (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput">
+  <button class="btn btn-tas-primary upload-button">
+    <input
+      #uploader
+      type="file"
+      ngFileSelect
+      [options]="options"
+      [uploadInput]="uploadInput"
+      (uploadOutput)="onUploadOutput($event)"
+    />
+    Upload
+  </button>
+</div>
+<small><em>.xls</em> <em>.xlsx</em> <em>.csv</em> <em>.tsv</em> <em>.xml</em> formats allowed</small>
