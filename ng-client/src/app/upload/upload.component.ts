@@ -36,8 +36,7 @@ export class UploadComponent {
       const event: UploadInput = {
         type: "uploadAll",
         url: "/upload",
-        method: "POST",
-        fieldName: "sampleFile"
+        method: "POST"
       };
       this.removeSelectedFile();
       this.uploadInput.emit(event);
