@@ -1,14 +1,15 @@
 <div id="Upload" ngFileDrop [options]="options" (uploadOutput)="onUploadOutput($event)" [uploadInput]="uploadInput">
-  <button class="btn btn-tas-primary upload-button">
-    <input
-      #uploader
-      type="file"
-      ngFileSelect
-      [options]="options"
-      [uploadInput]="uploadInput"
-      (uploadOutput)="onUploadOutput($event)"
-    />
-    Upload
-  </button>
+  <label>
+    <input #uploader type="file" ngFileSelect accept=".xls, .xlsx, .csv, .tsv, .xml" [options]="options" [uploadInput]="uploadInput"
+      (uploadOutput)="onUploadOutput($event)" multiple>
+    upload
+  </label>
 </div>
-<small><em>.xls</em> <em>.xlsx</em> <em>.csv</em> <em>.tsv</em> <em>.xml</em> formats allowed</small>
+
+<button (click)="uploadAll()">upload all</button>
+<button (click)="removeAll()">remove all</button>
+<div *ngFor="let file of files">
+  {{file.name}}
+  <button (click)="upload(file)">upload</button>
+  <button (click)="remove(file)">remove</button>
+</div>

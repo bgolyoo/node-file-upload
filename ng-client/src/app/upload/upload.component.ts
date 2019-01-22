@@ -12,7 +12,8 @@ export class UploadComponent {
 
   options: UploaderOptions = {
     concurrency: 1,
-    maxUploads: 1,
+    // TODO: add line if only one file is needed at a time
+    // maxUploads: 1,
     allowedContentTypes: [
       "application/excel",
       "application/vnd.ms-excel",
@@ -33,15 +34,17 @@ export class UploadComponent {
 
   onUploadOutput(output: UploadOutput): void {
     if (output.type === "allAddedToQueue") {
-      const event: UploadInput = {
-        type: "uploadAll",
-        url: "/upload",
-        method: "POST"
-      };
+      // TODO: add if uploading one file when added
+      // const event: UploadInput = {
+      //   type: "uploadAll",
+      //   url: "/upload",
+      //   method: "POST"
+      // };
       this.removeSelectedFile();
-      this.uploadInput.emit(event);
+      // this.uploadInput.emit(event);
     } else if (output.type === "addedToQueue" && typeof output.file !== "undefined") {
       this.files.push(output.file);
+      this.removeSelectedFile();
     } else if (output.type === "uploading" && typeof output.file !== "undefined") {
       const index = this.files.findIndex(file => typeof output.file !== "undefined" && file.id === output.file.id);
       this.files[index] = output.file;
@@ -60,7 +63,42 @@ export class UploadComponent {
       }
     } else if (output.type === "rejected") {
       console.log("File is rejected.");
+    } else if (output.type === "removed") {
+      const index = this.files.findIndex(file => typeof output.file !== "undefined" && file.id === output.file.id);
+      this.files.splice(index, 1);
+    } else if (output.type === "removedAll") {
+      this.files = [];
     }
+  }
+
+  uploadAll() {
+    const event: UploadInput = {
+      type: "uploadAll",
+      url: "/upload",
+      method: "POST"
+    };
+    this.removeSelectedFile();
+    this.uploadInput.emit(event);
+  }
+
+  upload(file) {
+    this.removeSelectedFile();
+    this.uploadInput.emit({ type: "uploadFile", url: "/upload", method: "POST", file: file });
+  }
+
+  cancelUpload(id: string) {
+    this.removeSelectedFile();
+    this.uploadInput.emit({ type: "cancel", id: id });
+  }
+
+  remove(file) {
+    this.removeSelectedFile();
+    this.uploadInput.emit({ type: "remove", id: file.id });
+  }
+
+  removeAll() {
+    this.removeSelectedFile();
+    this.uploadInput.emit({ type: "removeAll" });
   }
 
   private removeSelectedFile() {

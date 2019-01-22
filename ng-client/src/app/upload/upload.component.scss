@@ -1,0 +1,19 @@
+#Upload {
+  margin: 100px 0;
+  border: 1px dashed black;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  label {
+    position: relative;
+
+    input {
+      opacity: 0;
+      position: absolute;
+      width: 100%;
+      height: inherit;
+      cursor: pointer;
+    }
+  }
+}
